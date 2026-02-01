@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NANY v0.1 - What should you do right now?</title>
+    <meta name="description" content="Decision-support tool for neurodivergent users">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>NANY</h1>
+            <p class="tagline">What should you do right now?</p>
+        </header>
+
+        <!-- Progress indicator -->
+        <div class="progress">
+            <div class="step active" data-step="1">Profile</div>
+            <div class="step" data-step="2">Context</div>
+            <div class="step" data-step="3">Goal</div>
+            <div class="step" data-step="4">Action</div>
+            <div class="step" data-step="5">Done?</div>
+        </div>
+
+        <!-- Step 1: Cognitive Profile -->
+        <section id="step-1" class="step-content active">
+            <h2>Your Cognitive Profile</h2>
+            <p class="instructions">Answer honestly. These help match tasks to how your brain works.</p>
+
+            <form id="profile-form">
+                <div class="form-group">
+                    <label>How hard is it for you to start tasks?</label>
+                    <select name="initiation_friction" required id="initiation_friction">
+                        <option value="">Select...</option>
+                        <option value="low">Easy - I start things without much trouble</option>
+                        <option value="medium">Moderate - Sometimes I struggle to begin</option>
+                        <option value="high">Hard - Starting is often the biggest barrier</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>How long can you typically focus?</label>
+                    <select name="attention_span" required id="attention_span">
+                        <option value="">Select...</option>
+                        <option value="short">Short - I lose focus quickly (under 15 min)</option>
+                        <option value="medium">Medium - I can focus for reasonable periods</option>
+                        <option value="long">Long - I can maintain focus for extended time</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>How much do immediate rewards motivate you?</label>
+                    <select name="reward_sensitivity" required id="reward_sensitivity">
+                        <option value="">Select...</option>
+                        <option value="low">Low - I can delay gratification easily</option>
+                        <option value="medium">Medium - I balance immediate and future rewards</option>
+                        <option value="high">High - I'm strongly motivated by quick wins</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>How well do you estimate time?</label>
+                    <select name="time_blindness" required id="time_blindness">
+                        <option value="">Select...</option>
+                        <option value="low">Good - I gauge time accurately</option>
+                        <option value="medium">Okay - Sometimes misjudge</option>
+                        <option value="high">Poor - Time often surprises me</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>How do you typically respond to stress?</label>
+                    <select name="stress_response" required id="stress_response">
+                        <option value="">Select...</option>
+                        <option value="engage">Engage - I tackle problems head-on</option>
+                        <option value="avoid">Avoid - I tend to put things off</option>
+                        <option value="freeze">Freeze - I feel stuck and overwhelmed</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn primary">Continue</button>
+            </form>
+        </section>
+
+        <!-- Step 2: Environment -->
+        <section id="step-2" class="step-content">
+            <h2>Your Current Context</h2>
+            <p class="instructions">What's happening right now?</p>
+
+            <form id="environment-form">
+                <div class="form-group">
+                    <label>How many minutes do you have?</label>
+                    <input type="number" name="time_available_minutes" id="time_available_minutes" min="1" max="480"
+                        required placeholder="e.g., 30">
+                </div>
+
+                <div class="form-group">
+                    <label>Current energy level (1-5)</label>
+                    <div class="energy-selector">
+                        <input type="range" name="energy_level" id="energy_level" min="1" max="5" value="3">
+                        <div class="energy-labels">
+                            <span>1 (Low)</span>
+                            <span>2</span>
+                            <span>3</span>
+                            <span>4</span>
+                            <span>5 (High)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Where are you?</label>
+                    <select name="context" id="context" required>
+                        <option value="">Select...</option>
+                        <option value="home">Home</option>
+                        <option value="work">Work</option>
+                        <option value="school">School</option>
+                        <option value="outside">Outside</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>External pressure level</label>
+                    <select name="external_pressure" id="external_pressure" required>
+                        <option value="">Select...</option>
+                        <option value="none">None - No deadlines or expectations</option>
+                        <option value="low">Low - Some soft deadlines</option>
+                        <option value="medium">Medium - Notable pressure</option>
+                        <option value="high">High - Urgent or critical deadline</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn secondary" onclick="goToStep(1)">Back</button>
+                    <button type="submit" class="btn primary">Continue</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Step 3: Goal -->
+        <section id="step-3" class="step-content">
+            <h2>What do you want to do?</h2>
+            <p class="instructions">Describe your goal briefly.</p>
+
+            <form id="goal-form">
+                <div class="form-group">
+                    <label>What are you trying to accomplish?</label>
+                    <input type="text" name="description" id="goal_description" required
+                        placeholder="e.g., Clean my room, finish homework, exercise" maxlength="500">
+                </div>
+
+                <div class="form-group">
+                    <label>Priority</label>
+                    <select name="priority" id="priority" required>
+                        <option value="">Select...</option>
+                        <option value="low">Low - Nice to do</option>
+                        <option value="medium">Medium - Should get done</option>
+                        <option value="high">High - Must happen</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>When does this need to happen?</label>
+                    <select name="time_horizon" id="time_horizon" required>
+                        <option value="">Select...</option>
+                        <option value="today">Today</option>
+                        <option value="this_week">This week</option>
+                        <option value="long_term">Long term</option>
+                    </select>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn secondary" onclick="goToStep(2)">Back</button>
+                    <button type="submit" class="btn primary">Get Recommendation</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Step 4: Recommendation -->
+        <section id="step-4" class="step-content">
+            <h2>Do This</h2>
+
+            <div id="recommendation-display">
+                <div class="loading">Generating recommendation...</div>
+            </div>
+
+            <div id="recommendation-result" style="display: none;">
+                <div class="action-card">
+                    <div class="main-action" id="main-action"></div>
+                    <div class="action-meta">
+                        <span class="time" id="action-time"></span>
+                        <span class="difficulty" id="action-difficulty"></span>
+                    </div>
+                </div>
+
+                <div class="explanation" id="action-why"></div>
+
+                <div class="fallback-section">
+                    <p class="fallback-label">Too much? Try this instead:</p>
+                    <div class="fallback-action" id="fallback-action"></div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn secondary" onclick="goToStep(3)">Different Goal</button>
+                    <button type="button" class="btn primary" onclick="goToStep(5)">Done? Tell me</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Step 5: Feedback -->
+        <section id="step-5" class="step-content">
+            <h2>Did you do it?</h2>
+
+            <form id="feedback-form">
+                <div class="feedback-options">
+                    <button type="button" class="feedback-btn yes" onclick="submitFeedback(true)">
+                        ✓ Yes, I did it
+                    </button>
+                    <button type="button" class="feedback-btn no" onclick="submitFeedback(false)">
+                        ✗ No, not this time
+                    </button>
+                </div>
+            </form>
+
+            <div id="feedback-result" style="display: none;">
+                <div class="feedback-message" id="feedback-message"></div>
+                <button type="button" class="btn primary" onclick="startOver()">Start New Task</button>
+            </div>
+        </section>
+
+        <footer>
+            <p>NANY v0.1</p>
+        </footer>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+
+</html>
